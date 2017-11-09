@@ -17,6 +17,7 @@ function [idcs,varargout] = searchbinfile(fn,dt,varargin)
 %     + FHDR contains the full header read/interpreted at every byte offset
 %     + FHSZ gives the number of bytes read from the file.
 %     Any found queries will be located at qf(qi+1).
+% theethan, 2015
 
 
 % Internal references
