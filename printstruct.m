@@ -14,26 +14,17 @@ for i=1:numel(stc)
             fprintf('%s%s: (struct)\n',o,fn);
             printstruct(stc(i).(fn),o);
         else % print
-%             if ischar(stc(i).(fn)), fmtstr = '%s%s: ''%s''\n';
-%             elseif isnumeric(stc(i).(fn)), fmtstr = '%s%s: %f\n';
-%             else, fmtstr = '%s%s: {%s}\n';
-%             end
-%             fprintf(fmtstr,o,fn,stc(i).(fn));
+            fv = stc(i).(fn);
             % determine format string
-            if ischar(stc(i).(fn)), fs = ' ''%s''';
-            elseif isnumeric(stc(i).(fn)), fs = ' %f';
-            else, fs = ' {%s}';
+            if ischar(fv), fs = ' ''%s''';
+            elseif isnumeric(fv), fs = ' %f'; fv = fv(1:min(numel(fv),20));
+            elseif islogical(fv), fs = ' %d'; fv = fv(1:min(numel(fv),20));
+            else, fs = ' {%s}'; fv = fv(1:min(numel(fv),40));
             end
             % display
             fprintf('%s%s:',o,fn);
-            %for k=1:length(stc(i).(fn)), fprintf(fs,stc(i).(fn)(k)); end
-            fprintf(fs,stc(i).(fn));
+            fprintf(fs,fv);
             fprintf('\n');
-%             fprintf('%s%s:',o,fn);
-%             if ischar(stc(i).(fn)), fv = sprintf(' ''%s''',stc(i).(fn));
-%             elseif isnumeric(stc(i).(fn)), fv = sprintf(' %f',stc(i).(fn));
-%             else, fv = sprintf(' {%s}',stc(i).(fn));
-%             fprintf('\n');
         end
     end
     fprintf('%s-----\n',o);
