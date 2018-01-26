@@ -35,8 +35,11 @@ if nargin>3, axisoptn = varargin{3}; end
 if nargin>4, cmap = varargin{4}; else cmap = 'gray'; end % no error check
 
 % --- Process & prepare ---
-ims = double(ims); % just force conversion
+%ims = double(ims); % just force conversion
 s = round(0.05*nims); % big-step (pgup/dn) step size
+if isfloat(ims) % only do this if floating pt.
+    % <<<<<
+%s = round(0.05*nims); % big-step (pgup/dn) step size
 if nchn~=3, nchn = 1; else, nchn = 1:3; end
 if any(imag(ims(:)))
     if any(real(ims(:))),ims=abs(ims); else, ims=imag(ims); end
@@ -47,6 +50,11 @@ ims(ims<ww(1))=ww(1); ims(ims>ww(2))=ww(2); % ims definitely real now
 rng = (maxel(ims)-minel(ims)); low = minel(ims);
 if rng==0, rng=1; end % corner case of total iso-intensity
 ims = permute( (ims-low)/rng, [1 2 4 3] ); ww = (ww-low)/rng;
+    % >>>>>
+else
+    ww = []; % ?
+    ims = permute( ims, [1 2 4 3] ); % kind of stupid, should not permute
+end
 
 
 % --- OK, show! ---
@@ -54,7 +62,7 @@ i = 1; % <-- start at 1
 fig = figure('KeyPressFcn','uiresume;'); colormap(cmap); axis off; hold on;
 while true
     figure(fig), clf; set(gca,'YDir','reverse'); axis off; hold on;
-    imview(ims(:,:,nchn,i),ww); title(titles{i}); %axis off;
+    imview(ims(:,:,1:nchn,i),ww); title(titles{i}); %axis off;
     if exist('axisoptn','var'), axis(axisoptn); end
     try
         uiwait; kp = get(fig,'Currentkey');
