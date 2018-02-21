@@ -1,7 +1,8 @@
 function printstruct(stc,varargin)
 % PRINTSTRUCT recursively print contents of struct (or array of structs)
 
-if nargin<2, o = ''; else, o = [varargin{1} '  ']; end % space offset
+%if nargin>1&&~isempty(varargin{1}), o=[varargin{1} '  ']; else, o=''; end
+if nargin>1, o=[varargin{1} '  ']; else, o=''; end
 
 % get fieldnames
 fns = fieldnames(stc);
