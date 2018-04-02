@@ -20,7 +20,17 @@ for i=1:numel(stc)
             if ischar(fv), fs = ' ''%s''';
             elseif isnumeric(fv), fs = ' %f'; fv = fv(1:min(numel(fv),20));
             elseif islogical(fv), fs = ' %d'; fv = fv(1:min(numel(fv),20));
-            else, fs = ' {%s}'; fv = fv(1:min(numel(fv),40));
+            elseif iscell(fv)
+                fs = ' {%s }'; fv = fv(1:min(numel(fv),40));
+                for k=1:length(fv)
+                    if iscell(fv{k})
+                        fv{k} = sprintf(' (%dx%d cell)',size(fv{k}));
+                    elseif isnumeric(fv{k}), fv{k} = [' ' num2str(fv{k})];
+                    elseif ischar(fv{k}), fv{k} = [' ' fv{k}];
+                    end
+                end
+                fv = sprintf('%s',fv{:});
+            else, fs = ' {%s}'; fv = fv(1:min(numel(fv),40)); % what is ??
             end
             % display
             fprintf('%s%s:',o,fn);
