@@ -21,15 +21,22 @@ function fls = lsrecurse( fpb , varargin )
 
 rep = false; % default: no matching
 one = false;
+skiphide = true;
 if nargin>1 && ~isempty(varargin{1}), regexppat=varargin{1}; rep=true; end
 if nargin>2 && ~isempty(varargin{2}), one=strcmpi(varargin{2},'once'); end
+if nargin>3 && ~isempty(varargin{3}), skiphide=varargin{3}; end
 
 
 % Act
 
 q = dir(fpb); % list of files(/folders) in fbp
-q = q(~strncmp({q.name},'.',1)); % remove hidden files/folders
-    
+if skiphide
+    q = q(~strncmp({q.name},'.',1)); % remove hidden files/folders
+else
+    q = q(~strcmp({q.name},'.')); % remove .
+    q = q(~strcmp({q.name},'..')); % remove ..
+end
+
 sds = q([q.isdir]); % list of subdirectories
 fls = q(~[q.isdir]); % list of files (initialisation)
 if rep % trim
@@ -42,7 +49,13 @@ end
 while ~isempty(sds) % recurse through all subdirectories
     sd = sds(end); sds = sds(1:end-1); % pop a folder from list
     q = dir([sd.folder '\' sd.name]); % check its contents
-    q = q(~strncmp({q.name},'.',1)); % trim hidden
+    %q = q(~strncmp({q.name},'.',1)); % trim hidden
+    if skiphide
+        q = q(~strncmp({q.name},'.',1)); % remove hidden files/folders
+    else
+        q = q(~strcmp({q.name},'.')); % remove .
+        q = q(~strcmp({q.name},'..')); % remove ..
+    end
     if rep % trim
         q = q(~cellfun(@isempty,regexp({q.name},regexppat,'once')) ...
               | [q.isdir]); % trim all non-directories that don't match

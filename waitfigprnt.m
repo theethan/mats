@@ -9,8 +9,10 @@ function success = waitfigprnt(fh,varargin)
 %   left open but not printed.  FT is the file-type to be printed [default:
 %   -dpdf], and FN is the filename used [default: figure_X].
 %
-%   ACCEPT = WAITFIGPRNT(FH,[FT,FN],NC) does the same but optionally leaves
-%   the figure open if true is passed as NC.
+%   WAITFIGPRNT(...,[NC,EO]) does the same but optionally leaves the figure
+%   open if true is passed as NC, and optionally passes extra options EO to
+%   print.
+%   
 % theethan, 2014
 
 WAITMESSAGE = ...
@@ -68,7 +70,8 @@ if accept
                         'String',sprintf('wrote file: %s',fn),...
                         'EdgeColor','none','Color',[0.8 0 0],...
                         'FontSize',18,'HorizontalAlignment','center',...
-                        'VerticalAlignment','middle');
+                        'VerticalAlignment','middle',...
+                        'Interpreter','none');
         pause(0.5); delete(ah);
     catch me
         annotation('textbox',[0 0 1 1],...
