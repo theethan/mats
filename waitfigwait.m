@@ -13,10 +13,19 @@ WAITMESSAGE = 'enter/escape: close   |   any other key: continue';
 
 % Defaults
 accept=[]; cl=true; nocl=false; % redundant?
+if isnumeric(fh), fhn = fh; else fhn = fh.Number; end % r2014b update
 
 % Error check
+%if ~strncmpi(get(fh,'KeyPressFcn'),'uiresume',8)
+%    fprintf('Figure %d is not a waitfig\n',fh); return; % I quit!
+%end
 if ~strncmpi(get(fh,'KeyPressFcn'),'uiresume',8)
-    fprintf('Figure %d is not a waitfig\n',fh); return; % I quit!
+    annotation('textbox',[0 0 1 1],...
+                   'String',sprintf('Figure %d is not a waitfig\n',fhn),...
+                   'EdgeColor','none','Color',[0.8 0 0],...
+                   'FontSize',18,'HorizontalAlignment','center',...
+                    'VerticalAlignment','middle');
+    return; % I quit!
 end
 
 % Parse
