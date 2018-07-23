@@ -20,6 +20,7 @@ end
 
 % get series from plot (axes object)
 s = get(gca,'Children');
+s = s(strcmp(get(s,'Type'),'line')); % ignore non-line objects
 
 % get series data for chosen axis
 if strcmp(xyz,'x')

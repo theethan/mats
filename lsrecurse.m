@@ -7,12 +7,14 @@ function fls = lsrecurse( fpb , varargin )
 %   FLS = LSRECURSE( BASE , PAT ) filters the file list with the regexp 
 %   pattern PAT.
 %
-%   FLS = LSRECURSE( BASE , PAT, ONCE ) returns after finding any file
+%   FLS = LSRECURSE( BASE , PAT , ONCE ) returns after finding any file
 %   matching the pattern in any subdirectory of BASE.  It returns the DIR
 %   information for only that file.
+%
+%   FLS = LSRECURSE( BASE , PAT , ONCE , false ) includes hidden files and 
+%   directories (as identified by a leading '.' in the name) in the return.
 %   
-%   LSRECURSE skips hidden (leading '.') files and directories.  The order
-%   of directories returned is not specified.
+%   The order of directories returned is not specified.
 %
 % theethan, 2017
 
