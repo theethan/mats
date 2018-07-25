@@ -20,22 +20,23 @@ end
 
 % get series from plot (axes object)
 s = get(gca,'Children');
-s = s(strcmp(get(s,'Type'),'line')); % ignore non-line objects
 
 % get series data for chosen axis
-if strcmp(xyz,'x')
-    l = get(s,'XData');
-elseif strcmp(xyz,'y')
-    l = get(s,'YData');
-elseif strcmp(xyz,'z')
-    l = get(s,'ZData');
+if strcmp(xyz,'x'), dataprop = 'XData'; % translate dimension to
+elseif strcmp(xyz,'y'), dataprop = 'YData'; % property name
+elseif strcmp(xyz,'z'), dataprop = 'ZData';
 end
+s = s(isprop(s,dataprop)); % trim to just series with data
+l = get(s,dataprop); % extract data
 
 % in case only one line
 if ~iscell(l), l = {l}; end
 
 % trim empty series {needed?}
 l = l(~cellfun(@isempty,l));
+
+% reshape series in case not line (e.g., surface)
+for i=1:length(l), l{i} = reshape(l{i},[],1); end; clear i;
 
 % corner case?
 if isempty(l), fprintf('Warning: no data found in axes!\n'); return; end
