@@ -8,6 +8,10 @@ function axistight(xyz)
 % 
 % theethan, 2018
 
+% tbd: filter non-tight-constrained axes to only the current limits,
+%      e.g., if xlim([0 2]) has been called before calling axistight('y'),
+%      only consider ydata for which 0<=xdata<=2.
+
 if ~exist('xyz','var') || isempty(xyz)
     axis tight; return; % not specified, make all tight
 end
