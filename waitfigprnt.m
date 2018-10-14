@@ -20,9 +20,9 @@ WAITMESSAGE = ...
 
 % Defaults
 accept=[]; cl=true; nocl=false; % redundant?
-if isnumeric(fh), fhn = fh; else fhn = fh.Number; end % r2014b update
+if isnumeric(fh), fhn = fh; else, fhn = fh.Number; end % r2014b update
 fn = sprintf('figure_%d',fhn); ft = '-dpdf';
-success = false;
+success = [];
 eo = {};
 
 % Parse
@@ -54,16 +54,16 @@ while true
         uiwait; kp = get(fh,'Currentkey');
         if strcmp(kp,'escape'), accept=false; cl=true; break;
         elseif strcmp(kp,'return'), accept=true; cl=true; break;
-        else accept=[]; cl=false; break;
-%         else fprintf('key pressed: %s\n',kp); % DEBUG
+        else, accept=[]; cl=false; break;
         end
     catch me % maybe it was closed--exit now
         if strcmp(me.identifier,'MATLAB:class:InvalidHandle'), break;
-        else disp(me); end;
+        else, dispmexception(me); end;
     end
 end
-try delete(ah); end % --no 'catch'
+try delete(ah); catch me, dispmexception(me); end
 if accept
+    success = false; % don't assume success
     try
         print(ft,eo{:},fn); success = true;
         ah = annotation('textbox',[0 0 1 1],...
@@ -83,6 +83,6 @@ if accept
         cl = false;
     end    
 end
-if cl&&~nocl, try close(fh); end % --no 'catch' (ignore errors)
+if cl&&~nocl, try close(fh); catch me, dispmexception(me); end; end
 
 end

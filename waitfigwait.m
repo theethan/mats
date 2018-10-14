@@ -13,7 +13,7 @@ WAITMESSAGE = 'enter/escape: close   |   any other key: continue';
 
 % Defaults
 accept=[]; cl=true; nocl=false; % redundant?
-if isnumeric(fh), fhn = fh; else fhn = fh.Number; end % r2014b update
+if isnumeric(fh), fhn = fh; else, fhn = fh.Number; end % r2014b update
 
 % Error check
 %if ~strncmpi(get(fh,'KeyPressFcn'),'uiresume',8)
@@ -52,7 +52,8 @@ while true
         break;
     end
 end
-if cl&&~nocl, try close(fh); end % --no 'catch' (ignore errors)
-else delete(ah); end
+%if cl&&~nocl, try close(fh); end % --no 'catch' (ignore errors)
+if cl&&~nocl, try close(fh); catch me, dispmexception(me); end
+else, delete(ah); end
 
 end
