@@ -47,6 +47,7 @@ if isempty(l), fprintf('Warning: no data found in axes!\n'); return; end
 
 % find limits
 axlims = [min(cellfun(@min,l)) max(cellfun(@max,l))];
+if diff(axlims)==0, axlims = axlims+[-1 1]; end % for monotonous series
 
 if strcmp(xyz,'x')
     xlim(axlims);
