@@ -40,7 +40,7 @@ s = round(0.05*nims); % big-step (pgup/dn) step size
 if isfloat(ims) % only do this if floating pt.
     % <<<<<
 %s = round(0.05*nims); % big-step (pgup/dn) step size
-if nchn~=3, nchn = 1; else, nchn = 1:3; end
+if nchn~=3, nchn = 1; else, nchn = 1:3; end % if ~=3 don't know what it is
 if any(imag(ims(:)))
     if any(real(ims(:))),ims=abs(ims); else, ims=imag(ims); end
 end
@@ -62,7 +62,7 @@ i = 1; % <-- start at 1
 fig = figure('KeyPressFcn','uiresume;'); colormap(cmap); axis off; hold on;
 while true
     figure(fig), clf; set(gca,'YDir','reverse'); axis off; hold on;
-    imview(ims(:,:,1:nchn,i),ww); title(titles{i}); %axis off;
+    imview(ims(:,:,nchn,i),ww); title(titles{i}); %axis off;
     if exist('axisoptn','var'), axis(axisoptn); end
     try
         uiwait; kp = get(fig,'Currentkey');
